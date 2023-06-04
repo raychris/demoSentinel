@@ -14,20 +14,20 @@ This package is designed to run on a linux operating system.  It was tested on R
 ## Setting up the environment
 After cloning the repository to your machine to /your/local/directory, set two environment variables using bash.
 
-'''
+```
 export PYTHONPATH=$PYTHONPATH:/your/local/directory># lets python find the package
 export LOGDIR=/your/log/directory # log files will go here
-'''
+```
 
 Next set up your python environment using conda
-'''
+```
 cd /you/local/directory
 conda env create -f environment.yml
 conda activate fbk
-'''
+```
 
 ## Try it out
-'''
+```
 python /your/local/directory/demoSentinel/demoSentinel/runIt.py \
 --date_start 2023-03-01T00:00:00.000Z \
 --date_stop \
@@ -41,11 +41,11 @@ password \
 --base_path \
 /a/place/to/put/output \
 /
-'''
+```
 
 ## Get help
 
 For help from the command line
-'''
+```
 python /your/local/directory/demoSentinel/demoSentinel/runIt.py --help
-'''
+```
