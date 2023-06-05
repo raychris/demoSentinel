@@ -1,8 +1,5 @@
 '''module for making data requests'''
 
-import requests
-import http
-import datetime
 from sentinelsat import SentinelAPI, geojson_to_wkt, make_path_filter
 import os
 from osgeo import gdal, osr
