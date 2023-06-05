@@ -11,6 +11,7 @@ jobs:
       - name: Install dependencies
         run: |
           conda env create -f environment.yml
+          conda activate demoSentinel
       - name: Sphinx build
         run: |
           sphinx-build -b html docs/source/ docs/build/html
