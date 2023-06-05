@@ -11,6 +11,9 @@ This package demonstrates the ability to perform the following tasks:
 # GETTING STARTED
 This package is designed to run on a linux operating system.  It was tested on RHEL 8.
 
+## Documentation
+Documentation is hosted at 
+
 ## Setting up the environment
 After cloning the repository to your machine to /your/local/directory, set two environment variables using bash.
 
@@ -38,7 +41,7 @@ python /your/local/directory/demoSentinel/demoSentinel/runIt.py \
 /
 ```
 
-## Get help
+## Command line help
 
 For help from the command line
 ```
