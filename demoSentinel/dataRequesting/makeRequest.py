@@ -39,21 +39,31 @@ def findProducts(username,password,coordinate,platformName,dateStart,dateStop,ma
         api = SentinelAPI(username,password,apiUrl)
         # build point geometry for seach
         point = makeGeoJsonPoint(longitude=coordinate[0],latitude=coordinate[1])
-        # query the api
-        availableProducts = api.query(area=geojson_to_wkt(point),
-                                        date=(dateStart,dateStop),
-                                        area_relation='Intersects',
-                                        limit=maxNumberResults,
-                                        platformname=platformName,
-                                        cloudcoverpercentage=(0,10),
-                                        producttype='S2MSI2A')
+        # other filters
+        if platformName == 'Sentinel-2':
+            # query the api
+            availableProducts = api.query(area=geojson_to_wkt(point),
+                                            date=(dateStart,dateStop),
+                                            area_relation='Intersects',
+                                            limit=maxNumberResults,
+                                            platformname=platformName,
+                                            cloudcoverpercentage=(0,10),
+                                            producttype='S2MSI2A')
+        elif platformName == 'Sentinel-1':
+            availableProducts = api.query(area=geojson_to_wkt(point),
+                                            date=(dateStart,dateStop),
+                                            area_relation='Intersects',
+                                            limit=maxNumberResults,
+                                            platformname=platformName,
+                                            producttype='GRD',
+                                            filename='S1A_IW_GRDH*')
         return api,availableProducts
 
     except Exception as e:
         log.warning('The http request failed to reach the endpoint.\nAn unexpected error occurred.')
         log.warning(e)
 
-def downloadProducts(api,idList,basePath):
+def downloadProducts(api,idList,basePath,platformName):
     '''download products
     
     Parameter
@@ -64,18 +74,25 @@ def downloadProducts(api,idList,basePath):
         dictionary of available products from the api
     basePath : str
         location for output
+    platformName : str
+        either Sentinel-1 or Sentinel-2
 
     
     
     '''
 
-    pathFilterb4 = make_path_filter("*B04*60m*")
-    pathFilterb8 = make_path_filter("*B8A*60m*")
-    pathFilterSCL = make_path_filter('*SCL*60m*')
-    for id in idList:
-        api.download(id,basePath,nodefilter=pathFilterb4)
-        api.download(id,basePath,nodefilter=pathFilterb8)
-        api.download(id,basePath,nodefilter=pathFilterSCL)
+    if platformName == 'Sentinel-2':
+        pathFilterb4 = make_path_filter("*B04*60m*")
+        pathFilterb8 = make_path_filter("*B8A*60m*")
+        pathFilterSCL = make_path_filter('*SCL*60m*')
+        for id in idList:
+            api.download(id,basePath,nodefilter=pathFilterb4)
+            api.download(id,basePath,nodefilter=pathFilterb8)
+            api.download(id,basePath,nodefilter=pathFilterSCL)
+    elif platformName == 'Sentinel-1':
+        for id in idList:
+            api.download(id,basePath)
+    
 
 def makeRasters(pathToData):
     '''use datasets to make a multiband raster'''

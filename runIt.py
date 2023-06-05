@@ -18,7 +18,7 @@ def main():
     #get the __dict__ attribute of the returned argparse.Namespace object
     commandLineArgs = vars(getArguments(argList=None))
 
-    for platformName in ['Sentinel-2']:
+    for platformName in ['Sentinel-2','Sentinel-1']:
         api, availableProducts = findProducts(username=commandLineArgs['api_username'],
                                         password=commandLineArgs['api_password'],
                                         platformName=platformName,
@@ -31,19 +31,20 @@ def main():
         
         # download the products
         log.info('downloading products')
-        downloadProducts(api,gdf['uuid'],basePath=commandLineArgs['base_path'])
+        downloadProducts(api,gdf['uuid'],basePath=commandLineArgs['base_path'],platformName=platformName)
 
-        pathsS2 = []
-        # create a geotiff for each group of downloaded products
-        for path in gdf['identifier'].values:
-            subdir = [ dir[0] for dir in os.walk(os.path.join(commandLineArgs['base_path'],path+'.SAFE')) if 'R60m' in dir[0] ]
-            outPath = makeRasters(subdir[0])
-            pathsS2.append(outPath)
-        # add ndvi band to geotiffs
-        for path in pathsS2:
-            addNDVIBand(pathToGeoTiff=path)
-        # create a cumulative ndvi raster
-        createCumulativeNdviRaster(paths=pathsS2,basePath=commandLineArgs['base_path'])
+        if platformName == 'Sentinel-2':
+            pathsS2 = []
+            # create a geotiff for each group of downloaded products
+            for path in gdf['identifier'].values:
+                subdir = [ dir[0] for dir in os.walk(os.path.join(commandLineArgs['base_path'],path+'.SAFE')) if 'R60m' in dir[0] ]
+                outPath = makeRasters(subdir[0])
+                pathsS2.append(outPath)
+            # add ndvi band to geotiffs
+            for path in pathsS2:
+                addNDVIBand(pathToGeoTiff=path)
+            # create a cumulative ndvi raster
+            createCumulativeNdviRaster(paths=pathsS2,basePath=commandLineArgs['base_path'])
 
 
 
