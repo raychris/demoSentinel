@@ -4,7 +4,7 @@ This package demonstrates the ability to perform the following tasks:
 1. access to ESA SciHub database (requires signin up to ESA SciHub)
 2. download of Sentinel-1 (GRD) images acquired between date_start and date_stop that instersect with point_coord
 3. download of Sentinel-2 images acquired between date_start and date_stop that instersect with point_coord
-4. group the downloladed images into sub-series of perfectly spatially superimposable images (INCOMPLETE FOR Sentinel-1)
+4. group the downloladed images into sub-series of perfectly spatially superimposable images (INCOMPLETE for Sentinel-1)
 5. compute cumulative NDVI for each Sentinel-2 sub-series (See the sampleOutput directory in this repo for examples)
 6. compute the temporal mean of backscattering values for each Sentinel-1 sub-series (INCOMPLETE)
 
